@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="color-scheme" content="light">
+  <title>BEST THERAPY — ЛЮДИ. НАУКА. КРАСОТА.</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --teal: #0ABAB5;
+  --deep: #224d4b;
+  --dark: #243b39;
+  --ink: #253b39;
+  --muted: #6d7974;
+  --paper: #faf9f5;
+  --milk: #f5f6f1;
+  --mist: #e3efeb;
+  --shell: #efe5dc;
+  --serif: 'Cormorant Garamond', 'Baskerville', 'Iowan Old Style', 'Times New Roman', serif;
+  --sans: 'Manrope', 'Helvetica Neue', Arial, sans-serif;
+}
+* { box-sizing: border-box; }
+html, body { width:100%;height:100%;margin:0; }
+body { overflow: hidden; font-family: var(--sans); color:var(--ink);background:#e3e9e6; -webkit-font-smoothing:antialiased; }
+button { font:inherit; }
+::selection { background: var(--teal); color:white; }
+.deck { position:relative;width:100vw;height:100vh;height:100dvh;overflow:hidden;background:var(--paper);isolation:isolate; }
+.slide { position:absolute;inset:0;opacity:0;visibility:hidden;pointer-events:none;transform:translate3d(3.4%,0,0);transition:opacity .62s cubic-bezier(.2,.75,.2,1),transform .72s cubic-bezier(.2,.75,.2,1),visibility .62s;overflow-y:auto;scrollbar-width:thin;scrollbar-color:#bed4cb transparent; }
+.slide.active { opacity:1;visibility:visible;pointer-events:auto;transform:translate3d(0,0,0);z-index:2; }
+.slide.from-left { transform:translate3d(-3.4%,0,0); }
+.canvas { position:relative;width:100%;min-height:100%;display:flex;flex-direction:column;isolation:isolate;overflow:hidden; }
+.slide-content { position:relative;z-index:2;flex:1;min-height:0; }
+.eyebrow { font-family:var(--sans);font-size:clamp(9px,.83vw,12px);font-weight:700;letter-spacing:.29em;text-transform:uppercase;color:var(--deep); }
+.serif { font-family:var(--serif); font-weight:500; }
+.italic { font-style:italic; }
+.light { font-weight:400; }
+.highlight-word {color:#149d99;}
+.prose { max-width:700px; font-size:clamp(15px,1.27vw,20px);line-height:1.75;letter-spacing:-.012em;font-weight:400; }
+.prose p { margin:0 0 1.25em; }
+.prose p:last-child {margin-bottom:0;}
+.prose strong {font-weight:700;color:var(--deep);}
+.section-name { margin:0;font-family:var(--serif);font-weight:500;line-height:.91;letter-spacing:-.045em;font-size:clamp(62px,8.4vw,142px); }
+.section-name em {font-weight:400;}
+.section-sub {font-family:var(--serif);font-size:clamp(26px,3.0vw,46px);line-height:1.0;letter-spacing:-.02em;font-weight:500;}
+.fine-line {width:72px;height:1px;background:var(--teal);margin:26px 0 28px;}
+/* Cover */
+.cover .canvas { background:#f7f8f4; }
+.cover .cover-arc { position:absolute;z-index:0;width:57vw;height:120vh;border-radius:49% 0 0 48%;right:-12%;top:-14%;background:linear-gradient(155deg,#b5d8d2 0%,#68cbc7 36%,#548f8d 92%);transform:rotate(-8deg); }
+.cover .cover-arc:after {content:"";position:absolute;inset:8.2% 10.5% 8.5% 15%;border:1px solid rgba(255,255,255,.44);border-radius:50% 0 0 50%;}
+.cover .cover-thread {position:absolute;top:24%;right:10%;height:72%;width:35%;border-radius:50%;border:1px solid rgba(255,255,255,.28);transform:rotate(-22deg);}
+.cover .cover-grain { position:absolute;right:0;top:0;width:44%;height:100%;background:repeating-linear-gradient(-33deg,rgba(255,255,255,.075) 0px,rgba(255,255,255,.075) 1px,transparent 1px,transparent 17px);mix-blend-mode:soft-light;opacity:.45;}
+.cover-body {padding:clamp(48px,6.1vw,108px) clamp(42px,7.3vw,132px) clamp(58px,7.2vw,116px);display:flex;flex-direction:column;align-items:flex-start;justify-content:space-between;}
+.brand {font-family:var(--serif);font-size:clamp(19px,1.9vw,30px);font-weight:600;letter-spacing:.09em;color:var(--deep);z-index:2;line-height:1;}
+.brand::after {content:"";display:block;background:var(--teal);width:39px;height:2px;margin-top:17px;}
+.cover-title-wrap {margin-top:5vh;max-width:75%;}
+.cover-title {margin:0;font-family:var(--serif);font-size:clamp(83px,10.5vw,174px);line-height:.77;letter-spacing:-.06em;font-weight:500;color:var(--deep);}
+.cover-title > span {display:block;}
+.cover-title > span:nth-child(2){font-style:italic;font-weight:400;margin-left:4.4vw;color:#149d99;}
+.cover-title > span:nth-child(3){margin-left:8.6vw;}
+.cover-lead {font-family:var(--serif);font-size:clamp(22px,2.35vw,36px);font-style:italic;line-height:1.13;max-width:640px;margin:5.5vh 0 0;}
+.cover-format {max-width:630px;font-size:clamp(12px,1vw,16px);line-height:1.65;border-top:1px solid #a9cdc5;padding-top:20px;margin:5vh 0 0;letter-spacing:.003em;}
+.cover-format strong {font-weight:700;}
+/* Concept */
+.concept .canvas {background:#f8f8f4;}
+.concept .concept-backdrop {position:absolute;right:-12vw;top:-18vh;width:56vw;height:100vh;border-radius:50%;background:radial-gradient(ellipse at 40% 50%,#d4e9e3 3%,#e7f1ea 52%,transparent 71%);}
+.concept .concept-circle {position:absolute;right:10%;bottom:-24%;width:36vw;height:36vw;border:1px solid #a5d2c6;border-radius:50%;}
+.concept .concept-circle:after {content:"";position:absolute;inset:12%;border:1px solid #c7dfd7;border-radius:50%;}
+.concept-body {padding:clamp(60px,7.5vw,124px) clamp(48px,9vw,160px);display:grid;grid-template-columns:40% 1fr;align-items:center;gap:6vw;}
+.concept-head {align-self:start;}
+.concept .concept-title {font-family:var(--serif);font-weight:400;font-size:clamp(65px,8.7vw,142px);line-height:.9;letter-spacing:-.055em;margin:2.2vh 0 0;}
+.concept .concept-title em {color:#149d99;}
+.concept-body .prose {z-index:2;}
+.concept-body .prose p:first-child::first-letter {font-family:var(--serif);font-size:1.18em;color:var(--deep);}
+/* Pillars */
+.pillar .canvas {background:#f8f8f4;}
+.pillar-grid {min-height:100vh;min-height:100dvh;display:grid;grid-template-columns:54% 46%;}
+.pillar .copy-col {padding:clamp(45px,5.9vw,100px) clamp(42px,6.3vw,114px) clamp(68px,6.7vw,114px);position:relative;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;}
+.pillar .copy-col .section-label {position:absolute;top:clamp(34px,5.4vw,82px);left:clamp(42px,6.3vw,114px);}
+.pillar-title {font-family:var(--serif);font-weight:500;letter-spacing:-.065em;line-height:.75;font-size:clamp(90px,12.2vw,210px);margin:0 0 32px;color:var(--deep);}
+.pillar-title .number {display:block;font-family:var(--sans);font-size:clamp(13px,1.2vw,19px);font-weight:600;letter-spacing:.1em;line-height:1.1;color:#659e99;margin-bottom:22px;}
+.pillar .section-sub {margin:0 0 24px;max-width:540px;}
+.pillar .prose {font-size:clamp(14px,1.28vw,19px);line-height:1.76;max-width:595px;}
+.pillar .photo-col {position:relative;overflow:hidden;background:#acd5cd;isolation:isolate;min-height:100%;}
+.pillar .photo-col .photo-fill {position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;z-index:1;filter:saturate(.77) contrast(.97);}
+.pillar .photo-col .photo-fill.broken {opacity:0;}
+.pillar .photo-col:after {content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(22,64,62,.02) 30%,rgba(24,63,60,.14));z-index:2;pointer-events:none;}
+.pillar .photo-col:before {content:"";position:absolute;right:-27%;bottom:-24%;width:86%;height:85%;border-radius:50%;border:1px solid rgba(255,255,255,.6);z-index:3;pointer-events:none;}
+.pillar .photo-col .photo-overlay {position:absolute;inset:20px;border:1px solid rgba(255,255,255,.42);z-index:4;pointer-events:none;}
+.pillar.people .photo-col {background:linear-gradient(145deg,#b3ddd7,#7baaa5 45%,#507d7a);}
+.pillar.science .canvas {background:#f3f7f5;}
+.pillar.science .pillar-grid {grid-template-columns:45% 55%;}
+.pillar.science .photo-col {grid-column:1;grid-row:1;background:linear-gradient(145deg,#b5bcb3,#7fa5a0 50%,#477c79);}
+.pillar.science .copy-col {grid-column:2;grid-row:1;}
+.pillar.science .copy-col .section-label {display:none;}
+.pillar.science .copy-col .pillar-title {font-size:clamp(88px,11.5vw,192px);}
+.pillar.beauty .canvas {background:#f9f6f3;}
+.pillar.beauty .photo-col {background:linear-gradient(155deg,#e9d6ce,#b7cbc3 56%,#88b0a5);}
+.pillar.beauty .copy-col .pillar-title {font-size:clamp(84px,11.1vw,185px);}
+/* Visual concept */
+.visual .canvas {background:#f8f6f2;}
+.visual-body {padding:clamp(50px,6vw,98px) clamp(42px,6.5vw,112px);display:grid;grid-template-columns:53% 47%;gap:3vw;align-items:center;}
+.visual .visual-title {font-family:var(--serif);font-size:clamp(66px,7.6vw,128px);letter-spacing:-.056em;line-height:.78;font-weight:500;margin:0 0 46px;}
+.visual .visual-title em{color:#149d99;}
+.visual .prose {font-size:clamp(15px,1.25vw,19px);max-width:670px;}
+.mosaic {height:min(74vh,740px);display:grid;grid-template-columns:52% 48%;grid-template-rows:48% 52%;gap:9px;padding:9px;background:#d9eae3;box-shadow:18px 18px 0 #e9e2d9;}
+.mosaic .tile {position:relative;overflow:hidden; background:linear-gradient(120deg,#90c7bd,#c7dad4);}
+.mosaic .tile:nth-child(1){grid-column:1;grid-row:1/3;}
+.mosaic .tile:nth-child(2){grid-column:2;grid-row:1;background:linear-gradient(120deg,#6f9f97,#b5cec9);}
+.mosaic .tile:nth-child(3){grid-column:2;grid-row:2;background:linear-gradient(120deg,#edd5c9,#9dbcb3);}
+.mosaic img {display:block;width:100%;height:100%;object-fit:cover;filter:saturate(.72);}
+.mosaic img.broken{opacity:0;}
+/* Final */
+.final .canvas {background:linear-gradient(118deg,#edf3ee 0%,#faf9f5 58%,#f7f7f1 100%);}
+.final .final-wave {position:absolute;right:-13vw;top:-29vh;width:59vw;height:61vw;background:radial-gradient(ellipse at center,#bedcd4 0,#dcece6 55%,transparent 70%);border-radius:50%;opacity:.72;}
+.final .final-ring {position:absolute;right:-7vw;top:-17vh;width:39vw;height:39vw;border-radius:50%;border:1px solid #a3cfc5;opacity:.7;}
+.final-body {padding:clamp(60px,7vw,110px) clamp(45px,9vw,160px) clamp(70px,8vw,125px);display:flex;flex-direction:column;justify-content:center;}
+.final .final-title {font-family:var(--serif);font-size:clamp(58px,7.8vw,130px);font-weight:500;letter-spacing:-.048em;line-height:.9;margin:0 0 40px;}
+.final .mission {font-family:var(--serif);font-size:clamp(33px,4.3vw,71px);font-weight:500;line-height:1.04;letter-spacing:-.025em;max-width:1270px;margin:0 0 3.6vh;}
+.final .mission strong {font-weight:600;}
+.final .audience {font-size:clamp(14px,1.25vw,19px);line-height:1.75;max-width:1000px;}
+.final .result {border-top:1px solid #9fcfc2;padding-top:24px;margin-top:clamp(28px,5.0vh,56px);font-size:clamp(16px,1.55vw,23px);line-height:1.5;max-width:1050px;}
+.final .result strong{color:#2d736d;}
+/* Navigation */
+.nav {position:fixed;z-index:20;right:clamp(20px,3.9vw,72px);bottom:clamp(20px,3.5vw,55px);display:flex;align-items:center;gap:15px;}
+.nav button {width:44px;height:44px;background:rgba(250,250,247,.76);border:1px solid rgba(34,78,75,.26);border-radius:50%;color:#275c57;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:.2s ease;backdrop-filter:blur(14px);}
+.nav button:hover:not(:disabled) {background:var(--deep);border-color:var(--deep);color:white;transform:translateY(-2px);}
+.nav button:disabled {opacity:.3;cursor:default;}
+.nav svg {width:19px;height:19px;stroke:currentColor;stroke-width:1.7;fill:none;stroke-linecap:round;stroke-linejoin:round;}
+.nav-count {min-width:64px;text-align:center;color:#47746d;font-family:var(--serif);font-size:22px;font-style:italic;letter-spacing:.08em;}
+.top-progress {height:3px;position:fixed;top:0;left:0;right:0;z-index:22;background:transparent;}
+.top-progress .fill {display:block;width:calc(100% / 7);height:100%;background:#0ABAB5;transition:width .5s ease;}
+/* Accessibility */
+button:focus-visible {outline:3px solid #0ABAB5;outline-offset:4px;}
+@media(max-width:1100px) {
+  .cover-title {font-size:clamp(75px,10.5vw,130px);}
+  .cover-title-wrap {max-width:84%;}
+  .pillar-grid {grid-template-columns:57% 43%;}
+  .pillar.science .pillar-grid {grid-template-columns:43% 57%;}
+  .pillar .copy-col {padding-left:6vw;padding-right:5vw;}
+  .pillar .copy-col .section-label {left:6vw;}
+  .pillar-title {font-size:clamp(74px,10.2vw,140px);}
+  .pillar.science .copy-col .pillar-title,.pillar.beauty .copy-col .pillar-title {font-size:clamp(70px,9.7vw,128px);}
+  .concept-body {grid-template-columns:38% 1fr;gap:3vw;}
+}
+@media(max-width:720px) {
+  .slide {overscroll-behavior:contain;}
+  .canvas {min-height:100dvh;}
+  .cover .cover-arc {width:90vw;height:65vh;right:-43%;top:-24%;}
+  .cover .cover-thread {right:-15%;top:7%;}
+  .cover-body {padding:34px 27px 98px;justify-content:flex-start;}
+  .brand {font-size:24px;}
+  .cover-title-wrap {margin-top:20vh;max-width:100%;}
+  .cover-title {font-size:clamp(65px,16vw,110px);}
+  .cover-title > span:nth-child(2) {margin-left:5vw;}
+  .cover-title > span:nth-child(3) {margin-left:10vw;}
+  .cover-lead {font-size:clamp(24px,5.8vw,35px);margin-top:6vh;max-width:460px;}
+  .cover-format {font-size:13px;margin-top:auto;max-width:430px;}
+  .concept-body {display:flex;flex-direction:column;align-items:stretch;justify-content:center;padding:60px 31px 108px;gap:34px;}
+  .concept .concept-title {font-size:clamp(75px,15vw,112px);margin:0;}
+  .concept .prose {font-size:clamp(15px,3.5vw,18px);line-height:1.65;}
+  .concept .concept-circle {bottom:-12%;right:-45%;width:80vw;height:80vw;}
+  .pillar-grid,.pillar.science .pillar-grid {display:flex;flex-direction:column-reverse;min-height:100dvh;}
+  .pillar .photo-col,.pillar.science .photo-col {height:37vh;min-height:260px;flex:none;grid-column:auto;grid-row:auto;}
+  .pillar .copy-col,.pillar.science .copy-col {min-height:60vh;min-height:unset;flex:1;padding:42px 32px 105px;display:block;grid-column:auto;grid-row:auto;}
+  .pillar .copy-col .section-label {position:relative;top:auto;left:auto;margin-bottom:20px;}
+  .pillar.science .copy-col .section-label {display:none;}
+  .pillar-title,.pillar.science .copy-col .pillar-title,.pillar.beauty .copy-col .pillar-title {font-size:clamp(79px,17vw,120px);margin:0 0 22px;}
+  .pillar-title .number {font-size:13px;margin-bottom:16px;}
+  .pillar .section-sub {font-size:clamp(30px,6vw,41px);margin:0 0 15px;}
+  .pillar .prose {font-size:clamp(14px,3.3vw,18px);line-height:1.65;}
+  .pillar .photo-col .photo-overlay {inset:14px;}
+  .visual-body {display:flex;flex-direction:column;align-items:stretch;padding:56px 31px 108px;gap:26px;}
+  .visual .visual-title {font-size:clamp(70px,15vw,112px);margin:0 0 22px;}
+  .visual .prose {font-size:clamp(15px,3.4vw,18px);line-height:1.67;}
+  .mosaic {height:36vh;min-height:260px;max-height:430px;box-shadow:9px 9px 0 #e9e2d9;}
+  .final-body {padding:64px 31px 112px;min-height:100dvh;justify-content:center;}
+  .final .final-title {font-size:clamp(70px,14vw,106px);margin-bottom:30px;}
+  .final .mission {font-size:clamp(31px,6.5vw,49px);margin:0 0 28px;}
+  .final .audience {font-size:clamp(14px,3.3vw,17px);line-height:1.63;}
+  .final .result {font-size:clamp(15px,3.5vw,18px);padding-top:22px;margin-top:30px;}
+  .nav {right:19px;bottom:18px;gap:8px;}
+  .nav button {width:40px;height:40px;}
+  .nav-count {font-size:18px;min-width:50px;}
+}
+@media(max-height:650px) and (min-width:721px) {
+  .cover-body {padding-top:40px;padding-bottom:45px;}
+  .cover-title {font-size:clamp(70px,9.6vw,132px);}
+  .cover-title-wrap {margin-top:2vh;}
+  .cover-lead {margin-top:4vh;}
+  .cover-format {margin-top:3vh;}
+  .concept-body {padding-top:35px;padding-bottom:35px;}
+  .pillar .copy-col {padding-top:70px;padding-bottom:65px;}
+  .pillar-title {font-size:clamp(70px,10vw,142px);margin-bottom:20px;}
+  .pillar.science .copy-col .pillar-title,.pillar.beauty .copy-col .pillar-title {font-size:clamp(70px,9vw,128px);}
+  .pillar .section-sub {margin-bottom:16px;}
+  .pillar .prose {font-size:15px;line-height:1.5;}
+  .visual-body {padding-top:40px;padding-bottom:50px;}
+  .visual .visual-title {font-size:clamp(60px,7vw,102px);margin-bottom:23px;}
+  .final-body {padding-top:38px;padding-bottom:48px;}
+  .final .final-title {margin-bottom:20px;}
+  .final .mission {font-size:clamp(31px,3.7vw,55px);margin-bottom:20px;}
+  .final .result {margin-top:20px;padding-top:14px;}
+}
+@media(prefers-reduced-motion:reduce){.slide,.nav button,.top-progress .fill {transition:none!important;}}
+@media print {
+  @page {size:landscape;margin:0;}
+  html,body,.deck {height:auto!important;overflow:visible!important;width:100%!important;background:white;}
+  .slide {position:relative!important;inset:auto!important;display:block!important;visibility:visible!important;opacity:1!important;transform:none!important;overflow:hidden!important;height:100vh!important;min-height:100vh!important;page-break-after:always;break-after:page;}
+  .slide .canvas {height:100vh!important;min-height:100vh!important;}
+  .nav,.top-progress {display:none!important;}
+  * {-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;}
+}
+</style>
+<style>.site-return{position:fixed;z-index:100;left:clamp(16px,3vw,54px);bottom:clamp(18px,3.5vw,55px);display:inline-flex;align-items:center;gap:8px;text-decoration:none;color:#174843;font:600 12px Manrope,Arial,sans-serif;letter-spacing:.03em;padding:12px 16px;border-radius:100px;background:rgba(249,251,248,.8);border:1px solid rgba(13,136,130,.3);backdrop-filter:blur(14px);transition:.25s}.site-return:hover{color:white;background:#0a9994;border-color:#0a9994}@media(max-width:720px){.site-return{bottom:18px;left:16px;padding:10px 12px;font-size:11px}}</style>
+</head>
+<body>
+<main class="deck" role="region" aria-label="BEST THERAPY — ЛЮДИ. НАУКА. КРАСОТА.">
+  <section class="slide cover active" aria-label="Титульный слайд" aria-hidden="false">
+    <div class="canvas">
+      <div class="cover-arc" aria-hidden="true"></div><div class="cover-thread" aria-hidden="true"></div><div class="cover-grain" aria-hidden="true"></div>
+      <div class="slide-content cover-body">
+        <div class="brand">BEST THERAPY</div>
+        <div class="cover-title-wrap">
+          <h1 class="cover-title"><span>ЛЮДИ.</span><span>НАУКА.</span><span>КРАСОТА.</span></h1>
+          <p class="cover-lead">Философия, профессионализм и технологии современной эстетической медицины</p>
+        </div>
+        <p class="cover-format"><strong>Формат:</strong> премиальная иллюстрированная книга о бренде, его ценностях, специалистах, технологиях и клиентах.</p>
+      </div>
+    </div>
+  </section>
+  <section class="slide concept" aria-label="Концепция" aria-hidden="true">
+    <div class="canvas">
+      <div class="concept-backdrop" aria-hidden="true"></div><div class="concept-circle" aria-hidden="true"></div>
+      <div class="slide-content concept-body">
+        <div class="concept-head"><h2 class="concept-title">Концепция</h2><div class="fine-line"></div></div>
+        <div class="prose">
+          <p>Книга раскрывает BEST THERAPY как пространство, в котором профессиональная медицина, современные технологии и внимательное отношение к человеку формируют особую культуру красоты и заботы о себе.</p>
+          <p>В центре повествования — три составляющие бренда: <strong>люди, наука и красота</strong>. Через них раскрываются история компании, её философия, профессиональная команда, методы работы, технологическое оснащение и реальные истории клиентов.</p>
+          <p>Это не каталог услуг и не хронология достижений, а целостный портрет сильного современного бренда.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="slide pillar people" aria-label="Люди" aria-hidden="true">
+    <div class="canvas">
+      <div class="slide-content pillar-grid">
+        <div class="copy-col">
+          <div class="section-label eyebrow">Структура книги</div>
+          <h2 class="pillar-title"><span class="number">1.</span>ЛЮДИ</h2>
+          <div class="section-sub">Философия, ценности <em>и команда</em></div>
+          <div class="fine-line"></div>
+          <div class="prose"><p>История становления BEST THERAPY, принципы работы, профессиональная культура. Портреты основателей и специалистов, их компетенции, опыт, отношение к профессии и пациентам.</p></div>
+        </div>
+        <div class="photo-col">
+          <img class="photo-fill" alt="" decoding="async" src="https://images.openai.com/static-rsc-4/WTr3qqZOSWTzkngIL240FuGzkWaXwxgQraO3nJA7OvXcXGoMNkUBiUCjWaRdruuAulFSuhn7dEsMQLRJC8cyEBYeZk62NFD9zf-wO3DgYgU_vWwIkYtYxIS8GVQhs27WlEnAcEIXyUjwOyixsfKlElAWx5NGUguvxYvra1fh9iw?purpose=inline"/>
+          <div class="photo-overlay" aria-hidden="true"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="slide pillar science" aria-label="Наука" aria-hidden="true">
+    <div class="canvas">
+      <div class="slide-content pillar-grid">
+        <div class="copy-col">
+          <h2 class="pillar-title"><span class="number">2.</span>НАУКА</h2>
+          <div class="section-sub">Экспертиза, методики <em>и технологии</em></div>
+          <div class="fine-line"></div>
+          <div class="prose"><p>Медицинские направления, применяемое оборудование, современные методики, профессиональные стандарты. Объяснение того, как научные знания и технологии становятся основой персонального подхода.</p></div>
+        </div>
+        <div class="photo-col">
+          <img class="photo-fill" alt="" loading="lazy" decoding="async" src="https://images.openai.com/static-rsc-4/-_X2CvdAoQOwRZ9qVM_f5yOtdLK-yvNLiTjIpCRGgQWP23dA0EtW6rcHAU0jvbH4qR-RVe6cpqBDBvHi8Iaiuf0uPbUn3vAiqpKbZ2R2xYXdRwJ1NpiY35EnggdCwkZBWsbxwSn4lILd3X_kHGzYvK8blQ2wrkHq_NPcTebxFOc?purpose=inline"/>
+          <div class="photo-overlay" aria-hidden="true"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="slide pillar beauty" aria-label="Красота" aria-hidden="true">
+    <div class="canvas">
+      <div class="slide-content pillar-grid">
+        <div class="copy-col">
+          <h2 class="pillar-title"><span class="number">3.</span>КРАСОТА</h2>
+          <div class="section-sub">Результаты, доверие <em>и истории клиентов</em></div>
+          <div class="fine-line"></div>
+          <div class="prose"><p>Эстетика естественной красоты, клиентский опыт, реальные положительные отзывы и благодарности. Истории, показывающие ценность работы специалистов и отношение клиентов к бренду.</p></div>
+        </div>
+        <div class="photo-col">
+          <img class="photo-fill" alt="" loading="lazy" decoding="async" src="https://images.openai.com/static-rsc-4/jIQbByZV-whKbU27YTGc1g34wl3mux8xbOJI2qJiKUPi5FRzjecH46L79iWVVnlqWOzPc-S9shFOHkbVM1gLkLpXxou-F7b60YsIP93ip-qXxsHZMKnV7yAgc6gvkXZ4E7vBKx7RlqtDChDkqIFawhZtE5IWj_xhxTGtw_BmxXw?purpose=inline"/>
+          <div class="photo-overlay" aria-hidden="true"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="slide visual" aria-label="Визуальная концепция" aria-hidden="true">
+    <div class="canvas">
+      <div class="slide-content visual-body">
+        <div>
+          <h2 class="visual-title">Визуальная<br><em>концепция</em></h2>
+          <div class="fine-line"></div>
+          <div class="prose">
+            <p>Книга оформляется как коллекционное издание на пересечении современной медицинской эстетики и премиального lifestyle-журнала.</p>
+            <p>Крупные профессиональные фотографии, выразительные портреты команды, макросъёмка деталей и оборудования, минималистичная инфографика, цитаты специалистов и клиентов, просторная типографика.</p>
+          </div>
+        </div>
+        <div class="mosaic" aria-hidden="true">
+          <div class="tile"><img alt="" loading="lazy" src="https://images.openai.com/static-rsc-4/WTr3qqZOSWTzkngIL240FuGzkWaXwxgQraO3nJA7OvXcXGoMNkUBiUCjWaRdruuAulFSuhn7dEsMQLRJC8cyEBYeZk62NFD9zf-wO3DgYgU_vWwIkYtYxIS8GVQhs27WlEnAcEIXyUjwOyixsfKlElAWx5NGUguvxYvra1fh9iw?purpose=inline"/></div>
+          <div class="tile"><img alt="" loading="lazy" src="https://images.openai.com/static-rsc-4/-_X2CvdAoQOwRZ9qVM_f5yOtdLK-yvNLiTjIpCRGgQWP23dA0EtW6rcHAU0jvbH4qR-RVe6cpqBDBvHi8Iaiuf0uPbUn3vAiqpKbZ2R2xYXdRwJ1NpiY35EnggdCwkZBWsbxwSn4lILd3X_kHGzYvK8blQ2wrkHq_NPcTebxFOc?purpose=inline"/></div>
+          <div class="tile"><img alt="" loading="lazy" src="https://images.openai.com/static-rsc-4/jIQbByZV-whKbU27YTGc1g34wl3mux8xbOJI2qJiKUPi5FRzjecH46L79iWVVnlqWOzPc-S9shFOHkbVM1gLkLpXxou-F7b60YsIP93ip-qXxsHZMKnV7yAgc6gvkXZ4E7vBKx7RlqtDChDkqIFawhZtE5IWj_xhxTGtw_BmxXw?purpose=inline"/></div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="slide final" aria-label="Главная задача" aria-hidden="true">
+    <div class="canvas">
+      <div class="final-wave" aria-hidden="true"></div><div class="final-ring" aria-hidden="true"></div>
+      <div class="slide-content final-body">
+        <h2 class="final-title">Главная <em>задача</em></h2>
+        <p class="mission"><strong>Закрепить образ BEST THERAPY как профессионального, технологичного и привлекательного бренда, которому доверяют люди.</strong></p>
+        <div class="audience">Книга должна иметь ценность для трёх аудиторий: сотрудники видят профессиональную силу своей команды, клиенты получают подтверждение правильности выбора, партнёры — убедительное представление о масштабе и уровне компании.</div>
+        <div class="result"><strong>Итог:</strong> статусное имиджевое издание, в котором философия бренда подкреплена людьми, профессиональными знаниями, технологиями и подлинными отзывами клиентов.</div>
+      </div>
+    </div>
+  </section>
+</main>
+<div class="top-progress" aria-hidden="true"><span class="fill" id="progress"></span></div>
+<nav class="nav" aria-label="Навигация по слайдам">
+  <button type="button" id="prev" aria-label="Предыдущий слайд" disabled><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></button>
+  <span class="nav-count" id="counter" aria-live="polite">01 / 07</span>
+  <button type="button" id="next" aria-label="Следующий слайд"><svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg></button>
+</nav>
+<script>
+(function(){
+  'use strict';
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const prev = document.getElementById('prev');
+  const next = document.getElementById('next');
+  const count = document.getElementById('counter');
+  const progress = document.getElementById('progress');
+  let current = 0;
+  function goTo(index){
+    const target = Math.min(Math.max(index, 0), slides.length - 1);
+    if(target === current) return;
+    const was = current;
+    slides.forEach((slide,i)=>{
+      slide.classList.remove('active', 'from-left');
+      slide.setAttribute('aria-hidden', String(i!==target));
+      if(i < target) slide.classList.add('from-left');
+      if(i===target) {slide.classList.add('active'); slide.scrollTop=0;}
+    });
+    current=target;
+    prev.disabled=current===0;
+    next.disabled=current===slides.length-1;
+    count.textContent=String(current+1).padStart(2,'0')+' / '+String(slides.length).padStart(2,'0');
+    progress.style.width=((current+1)/slides.length*100)+'%';
+  }
+  prev.addEventListener('click',()=>goTo(current-1));
+  next.addEventListener('click',()=>goTo(current+1));
+  document.addEventListener('keydown',(ev)=>{
+    if(['ArrowRight','PageDown',' '].includes(ev.key)){ev.preventDefault();goTo(current+1);}
+    if(['ArrowLeft','PageUp'].includes(ev.key)){ev.preventDefault();goTo(current-1);}
+    if(ev.key==='Home'){ev.preventDefault();goTo(0);}
+    if(ev.key==='End'){ev.preventDefault();goTo(slides.length-1);}
+  });
+  let swipeX=0,swipeY=0;
+  document.addEventListener('touchstart',(ev)=>{if(ev.touches.length===1){swipeX=ev.touches[0].clientX;swipeY=ev.touches[0].clientY;}},{passive:true});
+  document.addEventListener('touchend',(ev)=>{if(!ev.changedTouches.length)return;const dx=ev.changedTouches[0].clientX-swipeX;const dy=ev.changedTouches[0].clientY-swipeY;if(Math.abs(dx)>65&&Math.abs(dx)>Math.abs(dy)*1.5)goTo(current+(dx<0?1:-1));},{passive:true});
+  document.querySelectorAll('img').forEach(img=>{
+    img.addEventListener('error',()=>img.classList.add('broken'));
+    if(img.complete && img.naturalWidth===0) img.classList.add('broken');
+  });
+})();
+</script>
+<a class="site-return" href="./" aria-label="Вернуться к разделам сайта">← К разделам</a>
+</body>
+</html>
