@@ -48,7 +48,37 @@
 }
 
 .hero-book-cta:hover { background: #245956; }
-.hero-book-cta span { font: 500 21px/1 var(--sans); color: #8ee4d8; }
+.hero-book-cta span {
+  position: relative;
+  flex: 0 0 18px;
+  width: 18px;
+  height: 18px;
+  color: #8ee4d8;
+  font-size: 0;
+}
+
+.hero-book-cta span::before,
+.hero-book-cta span::after {
+  content: "";
+  position: absolute;
+  box-sizing: border-box;
+}
+
+.hero-book-cta span::before {
+  inset: 1px 1px auto auto;
+  width: 9px;
+  height: 9px;
+  border-top: 1.5px solid currentColor;
+  border-right: 1.5px solid currentColor;
+}
+
+.hero-book-cta span::after {
+  top: 8px;
+  right: 0;
+  width: 18px;
+  border-top: 1.5px solid currentColor;
+  transform: rotate(-45deg);
+}
 .hero-book-cta:focus-visible,
 .reader-header a:focus-visible,
 .reader-footer a:focus-visible {
