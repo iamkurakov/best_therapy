@@ -25,7 +25,7 @@ jobs:
       - name: Prepare website
         run: |
           mkdir -p _site
-          cp index.html research.html database.html book.html site.css app.js data.js report.js _site/
+          cp index.html research.html database.html book.html brand-book.html site.css app.js data.js report.js _site/
       - name: Upload website
         uses: actions/upload-pages-artifact@v4
         with:
